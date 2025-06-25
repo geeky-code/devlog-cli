@@ -1,0 +1,53 @@
+{
+  "name": "devlog-cli",
+  "version": "0.0.0",
+  "description": "A CLI tool to automatically log git commits to your draft log API",
+  "main": "devlog.js",
+  "bin": {
+    "devlog": "./devlog.js"
+  },
+  "files": [
+    "devlog.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "echo 'Publishing devlog-cli...'",
+    "postinstall": "echo 'devlog-cli installed! Run \"devlog config\" to get started.'"
+  },
+  "keywords": [
+    "devlog",
+    "git",
+    "logging",
+    "developer",
+    "cli",
+    "commit",
+    "api",
+    "development",
+    "workflow",
+    "automation",
+    "git-hooks"
+  ],
+  "author": {
+    "name": "Peter Farmer Name",
+    "email": "peter@geekyco.de",
+    "url": "https://geekyco.de"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geeky-code/devlog-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/geeky-code/devlog-cli/issues"
+  },
+  "homepage": "https://github.com/geeky-code/devlog-cli#readme"
+}
