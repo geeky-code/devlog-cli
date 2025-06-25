@@ -4,7 +4,7 @@
   "description": "A CLI tool to automatically log git commits to your draft log API",
   "main": "devlog.js",
   "bin": {
-    "devlog": "./devlog.js"
+    "devlog": "devlog.js"
   },
   "files": [
     "devlog.js",
