@@ -120,16 +120,70 @@ class DevLog {
     return new Date().toISOString().split('T')[0];
   }
 
+  // Get repository name from git remote or current directory
+  getRepositoryName() {
+    try {
+      // Try to get remote URL
+      const remoteUrl = execSync('git remote -v', { encoding: 'utf8' }).trim();
+      
+      if (remoteUrl) {
+        // Look for origin fetch line
+        const lines = remoteUrl.split('\n');
+        const originFetch = lines.find(line => line.startsWith('origin') && line.includes('(fetch)'));
+        
+        if (originFetch) {
+          // Extract URL from line like: origin  git@github.com:WTC-Consulting/cdms-server.git (fetch)
+          const urlMatch = originFetch.match(/origin\s+([^\s]+)\s+\(fetch\)/);
+          
+          if (urlMatch && urlMatch[1]) {
+            const url = urlMatch[1];
+            
+            // Handle GitHub SSH URLs (git@github.com:owner/repo.git)
+            const sshMatch = url.match(/git@github\.com:([^\/]+\/[^\.]+)\.git/);
+            if (sshMatch) {
+              return sshMatch[1];
+            }
+            
+            // Handle GitHub HTTPS URLs (https://github.com/owner/repo.git)
+            const httpsMatch = url.match(/https:\/\/github\.com\/([^\/]+\/[^\.]+)(\.git)?$/);
+            if (httpsMatch) {
+              return httpsMatch[1];
+            }
+            
+            // Handle other git services with similar patterns
+            const genericMatch = url.match(/[:\/]([^\/]+\/[^\/\.]+)(\.git)?$/);
+            if (genericMatch) {
+              return genericMatch[1];
+            }
+          }
+        }
+      }
+    } catch (error) {
+      // If git remote fails, continue to fallback
+    }
+    
+    // Fallback to current directory name
+    return path.basename(process.cwd());
+  }
+
   // Format log entry based on configuration
   formatLogEntry(commitMessage, config) {
-    let logEntry = commitMessage;
-
+    // Get project name
+    const projectName = this.getRepositoryName();
+    
+    // Start with project name
+    let logEntry = `${projectName}`;
+    
+    // Add commit hash if configured
     if (config.includeCommitHash) {
       const commitHash = this.getLastCommitHash();
       if (commitHash) {
-        logEntry = `[${commitHash}] ${logEntry}`;
+        logEntry += ` [${commitHash}]`;
       }
     }
+    
+    // Add the commit message
+    logEntry += ` ${commitMessage}`;
 
     return logEntry;
   }
