@@ -4,8 +4,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
-      time: "06:40"
+      interval: "cron"
+      cronjob: "40 6 * * *"
     open-pull-requests-limit: 10
     ignore:
       - dependency-name: "*"
